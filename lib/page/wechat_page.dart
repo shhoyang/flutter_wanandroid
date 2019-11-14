@@ -4,12 +4,14 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_wanandroid/bean/banner_item.dart';
 import 'package:flutter_wanandroid/bean/wx_author.dart';
 import 'package:flutter_wanandroid/bloc/bloc_provider.dart';
+import 'package:flutter_wanandroid/bloc/search_bloc.dart';
 import 'package:flutter_wanandroid/bloc/wx_article_bloc.dart';
 import 'package:flutter_wanandroid/bloc/wechat_bloc.dart';
 import 'package:flutter_wanandroid/page/search_page.dart';
 import 'package:flutter_wanandroid/page/wx_article_page.dart';
 import 'package:flutter_wanandroid/utils/common_utils.dart';
 import 'package:flutter_wanandroid/utils/navigator_utils.dart';
+import 'package:flutter_wanandroid/widget/state/loading_view.dart';
 
 class WechatPage extends StatefulWidget {
   @override
@@ -26,77 +28,115 @@ class _WechatPageState extends State<WechatPage> {
             (BuildContext context, AsyncSnapshot<List<WxAuthor>> snapshot) {
           if (snapshot.data == null) {
             bloc.loadData();
-            return Container(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          } else {
-            List<WxAuthor> data = snapshot.data;
-            return DefaultTabController(
-              length: data.length,
-              child: NestedScrollView(
-                  headerSliverBuilder:
-                      (BuildContext context, bool innerBoxIsScrolled) {
-                    return <Widget>[
-                      SliverAppBar(
-                        brightness: Brightness.light,
-                        pinned: true,
-                        floating: true,
-                        expandedHeight:
-                            MediaQuery.of(context).size.width / 16.0 * 9.0,
-                        actions: <Widget>[
-                          IconButton(
-                              icon: Icon(Icons.search),
-                              onPressed: () {
-                                NavigatorUtils.pushPage(context, SearchPage());
-                              }),
-                        ],
-                        flexibleSpace: FlexibleSpaceBar(
-                          collapseMode: CollapseMode.pin,
-                          background: StreamBuilder(
-                            stream: bloc.bannerStream,
-                            builder: (BuildContext context,
-                                AsyncSnapshot<List<BannerItem>> snapshot) {
-                              List<BannerItem> data = snapshot.data;
-                              if (data == null || data.isEmpty) {
-                                return Image.asset(
-                                  CommonUtils.getImage("motto", "jpeg"),
-                                  fit: BoxFit.fitWidth,
-                                );
-                              } else {
-                                return PageView(
-                                  children:
-                                      snapshot.data.map((BannerItem banner) {
-                                    return CachedNetworkImage(
-                                      imageUrl: banner.imagePath,
-                                      fit: BoxFit.cover,
-                                    );
-                                  }).toList(),
-                                );
-                              }
-                            },
+            return LoadingView();
+          }
+          List<WxAuthor> data = snapshot.data;
+          return DefaultTabController(
+            length: data.length,
+            child: NestedScrollView(
+                headerSliverBuilder:
+                    (BuildContext context, bool innerBoxIsScrolled) {
+                  return <Widget>[
+                    SliverAppBar(
+                      title: InkWell(
+                        child: new Container(
+                          width: double.infinity,
+                          height: 32.0,
+                          alignment: Alignment.center,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Icon(
+                                Icons.search,
+                                size: 20.0,
+                                color: Colors.white,
+                              ),
+                              Text(
+                                "搜索",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white30,
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(4.0),
+                            ),
                           ),
                         ),
-                        bottom: TabBar(
-                          isScrollable: true,
-                          labelColor: Colors.blue,
-                          unselectedLabelColor: Colors.black,
-                          indicatorSize: TabBarIndicatorSize.label,
-                          tabs: data.map((WxAuthor author) {
-                            return Tab(text: author.name);
-                          }).toList(),
-                        ),
+                        onTap: () {
+                          NavigatorUtils.pushPage(
+                            context,
+                            BlocProvider<SearchBloc>(
+                              bloc: SearchBloc(),
+                              child: SearchPage(),
+                            ),
+                          );
+                        },
                       ),
-                    ];
-                  },
-                  body: TabBarView(
-                      children: data.map((WxAuthor author) {
-                    return BlocProvider(
-                        bloc: WxArticleBloc(author.id), child: WxArticlePage());
-                  }).toList())),
-            );
-          }
+                      brightness: Brightness.light,
+                      pinned: true,
+                      floating: true,
+                      expandedHeight:
+                          MediaQuery.of(context).size.width / 16.0 * 9.0 + 46.0,
+                      flexibleSpace: FlexibleSpaceBar(
+                          collapseMode: CollapseMode.pin,
+                          background: Column(
+                            children: <Widget>[
+                              Expanded(
+                                child: StreamBuilder(
+                                  stream: bloc.bannerStream,
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<List<BannerItem>>
+                                          snapshot) {
+                                    List<BannerItem> data = snapshot.data;
+                                    if (data == null || data.isEmpty) {
+                                      return Image.asset(
+                                        CommonUtils.getImage("motto", "jpeg"),
+                                        fit: BoxFit.fitWidth,
+                                      );
+                                    } else {
+                                      return PageView(
+                                        children: snapshot.data
+                                            .map((BannerItem banner) {
+                                          return CachedNetworkImage(
+                                            imageUrl: banner.imagePath,
+                                            fit: BoxFit.cover,
+                                          );
+                                        }).toList(),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ),
+                              Container(
+                                height: 46.0,
+                              ),
+                            ],
+                          )),
+                      bottom: TabBar(
+                        isScrollable: true,
+                        labelColor: Colors.blue,
+                        unselectedLabelColor: Colors.black,
+                        indicatorSize: TabBarIndicatorSize.label,
+                        tabs: data.map((WxAuthor author) {
+                          return Tab(text: author.name);
+                        }).toList(),
+                      ),
+                    ),
+                  ];
+                },
+                body: TabBarView(
+                    children: data.map((WxAuthor author) {
+                  return BlocProvider(
+                      bloc: WxArticleBloc(author.id), child: WxArticlePage());
+                }).toList())),
+          );
         });
   }
 }

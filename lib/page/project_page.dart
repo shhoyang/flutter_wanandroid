@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_wanandroid/bean/article.dart';
-import 'package:flutter_wanandroid/bean/project_type.dart';
+import 'package:flutter_wanandroid/bean/project_tree.dart';
 import 'package:flutter_wanandroid/bloc/bloc_provider.dart';
 import 'package:flutter_wanandroid/bloc/project_bloc.dart';
+import 'package:flutter_wanandroid/bloc/project_list_bloc.dart';
 import 'package:flutter_wanandroid/constant/strings.dart';
-import 'package:flutter_wanandroid/event/list_state.dart';
+import 'package:flutter_wanandroid/page/project_list_page.dart';
 import 'package:flutter_wanandroid/utils/common_utils.dart';
+import 'package:flutter_wanandroid/utils/list_state.dart';
+import 'package:flutter_wanandroid/utils/navigator_utils.dart';
 import 'package:flutter_wanandroid/widget/article_item.dart';
 import 'package:flutter_wanandroid/widget/simple_app_bar.dart';
 import 'package:flutter_wanandroid/widget/space.dart';
@@ -17,104 +20,96 @@ class ProjectPage extends StatefulWidget {
   _ProjectPageState createState() => _ProjectPageState();
 }
 
-class _ProjectPageState extends State<ProjectPage> {
+class _ProjectPageState extends State<ProjectPage>
+    with AutomaticKeepAliveClientMixin {
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     ProjectBloc bloc = BlocProvider.of<ProjectBloc>(context);
-//    bloc.stateStream.listen((state) {
-//      if (state & ListState.NO_DATA != ListState.EMPTY) {}
-//
-//      if (state & ListState.REFRESH != ListState.EMPTY) {
-//        _refreshController?.refreshCompleted();
-//      } else {
-//        if (state & ListState.LOAD_MORE_FAILED != ListState.EMPTY) {
-//          _refreshController?.loadFailed();
-//        } else if (state & ListState.NO_MORE != ListState.EMPTY) {
-//          _refreshController?.loadNoData();
-//        } else {
-//          _refreshController?.loadComplete();
-//        }
-//      }
-//    });
+    bloc.stateStream.listen((state) {
+      ListState.setController(_refreshController, state);
+    });
 
     Widget _buildProjectType() {
-      return SliverToBoxAdapter(
-        child: Container(
-          height: 200.0,
-          child: StreamBuilder(
-              stream: bloc.projectTypeStream,
-              builder: (BuildContext context,
-                  AsyncSnapshot<List<ProjectType>> snapshot) {
-                return GridView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: snapshot.data == null ? 0 : snapshot.data.length,
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 1.0,
-                    ),
-                    itemBuilder: (BuildContext context, int index) {
-                      return InkWell(
-                        child: new Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Image.asset(
-                              CommonUtils.getImage("icon"),
-                              width: 48,
-                              height: 48,
+      return Container(
+        height: 200.0,
+        child: StreamBuilder(
+            stream: bloc.projectTreeStream,
+            builder: (BuildContext context,
+                AsyncSnapshot<List<ProjectTree>> snapshot) {
+              return GridView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: snapshot.data == null ? 0 : snapshot.data.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 1.0,
+                  ),
+                  itemBuilder: (BuildContext context, int index) {
+                    ProjectTree projectTree = snapshot.data[index];
+                    return InkWell(
+                      child: new Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Image.asset(
+                            CommonUtils.getImage("icon"),
+                            width: 48,
+                            height: 48,
+                          ),
+                          Space.getV(4.0),
+                          Text(
+                            projectTree.name.replaceAll("&amp;", ""),
+                            maxLines: 1,
+                            style: TextStyle(fontSize: 12.0),
+                          )
+                        ],
+                      ),
+                      borderRadius:
+                          new BorderRadius.all(new Radius.circular(50.0)),
+                      onTap: () {
+                        NavigatorUtils.pushPage(
+                          context,
+                          BlocProvider<ProjectListBloc>(
+                            bloc: ProjectListBloc(projectTree.id),
+                            child: ProjectListPage(
+                              type: projectTree.name.replaceAll("&amp;", ""),
                             ),
-                            Space.getV(4.0),
-                            Text(
-                              snapshot.data[index].name.replaceAll("&amp;", ""),
-                              maxLines: 1,
-                              style: TextStyle(fontSize: 12.0),
-                            )
-                          ],
-                        ),
-                        borderRadius:
-                            new BorderRadius.all(new Radius.circular(50.0)),
-                        onTap: () {},
-                      );
-                    });
-              }),
-          decoration: BoxDecoration(
-              border: Border(
-                  bottom: BorderSide(width: 8.0, color: Color(0xFFF0F0F0)))),
-        ),
+                          ),
+                        );
+                      },
+                    );
+                  });
+            }),
+        decoration: BoxDecoration(
+            border: Border(
+                bottom: BorderSide(width: 8.0, color: Color(0xFFF0F0F0)))),
       );
     }
 
-    Widget _buildList(List<Article> data) {
+    List<Widget> _buildList(List<Article> data) {
       if (data == null) {
         bloc.refresh();
-        return Container(
-          child: Center(
-            child: Text("LOADING..."),
-          ),
-        );
+        return [_buildProjectType()];
       }
 
       if (data.isEmpty) {
-        return Container(
-          child: Center(
-            child: Text("NO DATA"),
-          ),
-        );
+        return [_buildProjectType()];
       }
 
-      return SliverList(
-        delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
-          Article article = data[index];
-          return ArticleItem(
-              article: article, onPressed: () {}, onFavPressed: () {});
-        }, childCount: data.length),
-      );
+      List<Widget> list = [];
+      list.add(_buildProjectType());
+      data.forEach((article) {
+        list.add(ArticleItem(
+            article: article, onPressed: () {}, onFavPressed: () {}));
+      });
+
+      return list;
     }
 
     return Scaffold(
-      appBar: SimpleAppBar(Strings.PROJECT),
+      appBar: SimpleAppBar(Strings.project),
       body: StreamBuilder(
           stream: bloc.stream,
           builder:
@@ -126,14 +121,20 @@ class _ProjectPageState extends State<ProjectPage> {
               onLoading: bloc.loadMore,
               controller: _refreshController,
               header: WaterDropHeader(),
-              child: CustomScrollView(
-                slivers: <Widget>[
-                  _buildProjectType(),
-                  _buildList(snapshot.data),
-                ],
+              child: ListView(
+                children: _buildList(snapshot.data),
               ),
             );
           }),
     );
   }
+
+  @override
+  void dispose() {
+    _refreshController?.dispose();
+    super.dispose();
+  }
+
+  @override
+  bool get wantKeepAlive => true;
 }

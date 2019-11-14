@@ -12,10 +12,10 @@ class _MePageState extends State<MePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SimpleAppBar(Strings.ME),
+      appBar: SimpleAppBar(Strings.me),
       body: Container(
         child: Center(
-          child: Text(Strings.ME),
+          child: Text(Strings.me),
         ),
       ),
     );

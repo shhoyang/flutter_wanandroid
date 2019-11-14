@@ -1,5 +1,5 @@
 import 'package:flutter_wanandroid/bloc/base_bloc.dart';
-import 'package:flutter_wanandroid/event/list_state.dart';
+import 'package:flutter_wanandroid/utils/list_state.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract class BaseListBloc<T> extends BaseBloc {
@@ -43,30 +43,30 @@ abstract class BaseListBloc<T> extends BaseBloc {
     int ret;
     if (_isRefresh) {
       if (data == null) {
-        ret = ListState.REFRESH |
-            ListState.FAILED |
-            ListState.NO_MORE |
-            ListState.NO_DATA;
+        ret = ListState.refresh |
+            ListState.failed |
+            ListState.noMore |
+            ListState.noData;
       } else if (data.isEmpty) {
-        ret = ListState.REFRESH |
-            ListState.SUCCEED |
-            ListState.NO_MORE |
-            ListState.NO_DATA;
+        ret = ListState.refresh |
+            ListState.succeed |
+            ListState.noMore |
+            ListState.noData;
       } else if (data.length < pageSize()) {
-        ret = ListState.REFRESH | ListState.SUCCEED | ListState.NO_MORE;
+        ret = ListState.refresh | ListState.succeed | ListState.noMore;
       } else {
-        ret = ListState.REFRESH | ListState.SUCCEED;
+        ret = ListState.refresh | ListState.succeed;
       }
       if (data != null && data.isNotEmpty) {
         _list.addAll(data);
       }
     } else {
       if (data == null) {
-        ret = ListState.LOAD_MORE | ListState.FAILED;
+        ret = ListState.loadMore | ListState.failed;
       } else if (data.length < pageSize()) {
-        ret = ListState.LOAD_MORE | ListState.SUCCEED | ListState.NO_MORE;
+        ret = ListState.loadMore | ListState.succeed | ListState.noMore;
       } else {
-        ret = ListState.LOAD_MORE | ListState.SUCCEED;
+        ret = ListState.loadMore | ListState.succeed;
       }
       if (data != null && data.isNotEmpty) {
         _list.addAll(data);

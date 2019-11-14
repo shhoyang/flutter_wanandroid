@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/bloc/bloc_provider.dart';
+import 'package:flutter_wanandroid/bloc/knowledge_bloc.dart';
 import 'package:flutter_wanandroid/bloc/project_bloc.dart';
 import 'package:flutter_wanandroid/bloc/wechat_bloc.dart';
 import 'package:flutter_wanandroid/constant/strings.dart';
@@ -34,14 +35,14 @@ class _HomePageState extends State<HomePage>
     _page = [
       BlocProvider<WechatBloc>(bloc: WechatBloc(), child: WechatPage()),
       BlocProvider<ProjectBloc>(bloc: ProjectBloc(), child: ProjectPage()),
-      KnowledgePage(),
+      BlocProvider<KnowledgeBloc>(bloc: KnowledgeBloc(), child: KnowledgePage()),
       MePage()
     ];
     tabs = [
-      TabItem(Strings.HOME, "home_normal", "home_active"),
-      TabItem(Strings.PROJECT, "project_normal", "project_active"),
-      TabItem(Strings.KNOWLEDGE, "knowledge_normal", "knowledge_active"),
-      TabItem(Strings.ME, "me_normal", "me_active")
+      TabItem(Strings.home, "home_normal", "home_active"),
+      TabItem(Strings.project, "project_normal", "project_active"),
+      TabItem(Strings.knowledge, "knowledge_normal", "knowledge_active"),
+      TabItem(Strings.me, "me_normal", "me_active")
     ];
   }
 
@@ -70,6 +71,7 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
 //      body:  PageView.builder(
 //          physics: NeverScrollableScrollPhysics(),

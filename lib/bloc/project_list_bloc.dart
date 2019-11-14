@@ -3,16 +3,15 @@ import 'package:flutter_wanandroid/api/dio_manager.dart';
 import 'package:flutter_wanandroid/bean/article.dart';
 import 'package:flutter_wanandroid/bloc/base_list_bloc.dart';
 
-class WxArticleBloc extends BaseListBloc<Article> {
-  final int authorId;
+class ProjectListBloc extends BaseListBloc<Article> {
+  final int typeId;
 
-  WxArticleBloc(this.authorId) : super();
+  ProjectListBloc(this.typeId) : super();
 
   @override
   void loadData([int page]) async {
-    DioManager.getInstance().get(
-        ApiService.getUrl(ApiService.WX_ARTICLE_LIST, id: authorId, page: page),
-        (data) {
+    DioManager.getInstance()
+        .get(ApiService.getUrl(ApiService.PROJECT_LIST, page: page), (data) {
       List list = data["datas"];
       List<Article> temp = list.map((item) {
         return Article.fromJson(item);
@@ -20,6 +19,6 @@ class WxArticleBloc extends BaseListBloc<Article> {
       succeed(temp);
     }, errorCallBack: (code, msg) {
       failed(code, msg);
-    });
+    }, params: {"cid": typeId});
   }
 }

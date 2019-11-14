@@ -5,6 +5,7 @@ class Space {
   static Widget h16 = SizedBox(width: 16.0);
 
   static Widget v8 = SizedBox(height: 8.0);
+  static Widget v16 = SizedBox(height: 16.0);
 
   static Widget getH(double w) {
     return SizedBox(width: w);

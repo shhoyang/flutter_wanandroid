@@ -5,7 +5,6 @@ class TextStyles {
   static final TextStyle listTitle = TextStyle(
     color: Colors.black,
     fontSize: 16.0,
-    fontWeight: FontWeight.bold,
   );
 
   static final TextStyle listSubtitle = TextStyle(

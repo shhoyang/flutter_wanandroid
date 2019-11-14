@@ -12,11 +12,12 @@ class ArticleItem extends StatelessWidget {
   final VoidCallback onFavPressed;
   final bool showAuthor;
 
-  ArticleItem({Key key,
-    this.article,
-    this.onPressed,
-    this.onFavPressed,
-    this.showAuthor = true})
+  ArticleItem(
+      {Key key,
+      this.article,
+      this.onPressed,
+      this.onFavPressed,
+      this.showAuthor = true})
       : super(key: key);
 
   @override
@@ -26,9 +27,11 @@ class ArticleItem extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
         elevation: 4.0,
         shape: const RoundedRectangleBorder(
-            borderRadius: const BorderRadius.only(
-                topLeft: const Radius.circular(16.0),
-                bottomRight: Radius.circular(16.0))),
+          borderRadius: const BorderRadius.only(
+            topLeft: const Radius.circular(16.0),
+            bottomRight: Radius.circular(16.0),
+          ),
+        ),
         child: Container(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -76,9 +79,9 @@ class ArticleItem extends StatelessWidget {
                   Expanded(
                     child: showAuthor
                         ? Text(
-                      article.chapterName.toString(),
-                      style: TextStyles.listExtra,
-                    )
+                            article.author,
+                            style: TextStyles.listExtra,
+                          )
                         : Container(),
                   ),
                   Space.h16,
@@ -91,7 +94,10 @@ class ArticleItem extends StatelessWidget {
                         decoration: TextDecoration.underline,
                       ),
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      NavigatorUtils.pushWeb(
+                          context, article.title, article.projectLink);
+                    },
                   ),
                   Space.h16,
                   InkWell(
@@ -104,14 +110,14 @@ class ArticleItem extends StatelessWidget {
                     onTap: onFavPressed,
                   ),
                 ],
-              )
+              ),
             ],
           ),
         ),
       ),
-//      onTap: () {
-//        NavigatorUtils.pushWeb(context, article.title, article.link);
-//      },
+      onTap: () {
+        NavigatorUtils.pushWeb(context, article.title, article.link);
+      },
     );
   }
 }
