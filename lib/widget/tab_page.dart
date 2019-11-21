@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_wanandroid/widget/style/h_colors.dart';
 
 class TabPage extends StatefulWidget {
   final List<Widget> tabs;
@@ -35,9 +36,10 @@ class _TabPageState extends State<TabPage> with SingleTickerProviderStateMixin {
         title: TabBar(
             isScrollable: true,
             controller: _tabController,
-            labelColor: Colors.blue,
-            unselectedLabelColor: Colors.black,
+            labelColor: HColors.tabActive,
+            unselectedLabelColor: HColors.tabNormal,
             labelPadding: const EdgeInsets.all(8.0),
+            indicatorColor: HColors.tabActive,
             indicatorSize: TabBarIndicatorSize.label,
             tabs: widget.tabs),
         centerTitle: true,

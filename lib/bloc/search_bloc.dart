@@ -20,7 +20,7 @@ class SearchBloc extends BaseBloc {
 
   @override
   void loadData([int page]) async {
-    DioManager.getInstance().get(ApiService.getUrl(ApiService.HOT_SEARCH), (data) {
+    DioManager.getInstance().get(ApiService.getUrl(ApiService.hotSearch), (data) {
       List list = data;
       List<HotWord> temp = list.map((item) {
         return HotWord.fromJson(item);

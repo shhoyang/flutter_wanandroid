@@ -7,11 +7,14 @@ import 'package:flutter_wanandroid/bloc/bloc_provider.dart';
 import 'package:flutter_wanandroid/bloc/search_bloc.dart';
 import 'package:flutter_wanandroid/bloc/wx_article_bloc.dart';
 import 'package:flutter_wanandroid/bloc/wechat_bloc.dart';
+import 'package:flutter_wanandroid/widget/style/h_colors.dart';
+import 'package:flutter_wanandroid/constant/strings.dart';
 import 'package:flutter_wanandroid/page/search_page.dart';
 import 'package:flutter_wanandroid/page/wx_article_page.dart';
 import 'package:flutter_wanandroid/utils/common_utils.dart';
 import 'package:flutter_wanandroid/utils/navigator_utils.dart';
 import 'package:flutter_wanandroid/widget/state/loading_view.dart';
+import 'package:flutter_wanandroid/widget/style/h_radius.dart';
 
 class WechatPage extends StatefulWidget {
   @override
@@ -19,6 +22,7 @@ class WechatPage extends StatefulWidget {
 }
 
 class _WechatPageState extends State<WechatPage> {
+
   @override
   Widget build(BuildContext context) {
     final WechatBloc bloc = BlocProvider.of<WechatBloc>(context);
@@ -39,7 +43,7 @@ class _WechatPageState extends State<WechatPage> {
                   return <Widget>[
                     SliverAppBar(
                       title: InkWell(
-                        child: new Container(
+                        child: Container(
                           width: double.infinity,
                           height: 32.0,
                           alignment: Alignment.center,
@@ -51,12 +55,12 @@ class _WechatPageState extends State<WechatPage> {
                               Icon(
                                 Icons.search,
                                 size: 20.0,
-                                color: Colors.white,
+                                color: HColors.white,
                               ),
                               Text(
-                                "搜索",
+                                Strings.search,
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: HColors.white,
                                   fontSize: 16.0,
                                 ),
                               ),
@@ -64,9 +68,7 @@ class _WechatPageState extends State<WechatPage> {
                           ),
                           decoration: BoxDecoration(
                             color: Colors.white30,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(4.0),
-                            ),
+                            borderRadius: HRadius.r4,
                           ),
                         ),
                         onTap: () {
@@ -121,8 +123,9 @@ class _WechatPageState extends State<WechatPage> {
                           )),
                       bottom: TabBar(
                         isScrollable: true,
-                        labelColor: Colors.blue,
-                        unselectedLabelColor: Colors.black,
+                        labelColor: HColors.tabActive,
+                        unselectedLabelColor: HColors.tabNormal,
+                        indicatorColor: HColors.tabActive,
                         indicatorSize: TabBarIndicatorSize.label,
                         tabs: data.map((WxAuthor author) {
                           return Tab(text: author.name);
@@ -133,7 +136,7 @@ class _WechatPageState extends State<WechatPage> {
                 },
                 body: TabBarView(
                     children: data.map((WxAuthor author) {
-                  return BlocProvider(
+                  return BlocProvider<WxArticleBloc>(
                       bloc: WxArticleBloc(author.id), child: WxArticlePage());
                 }).toList())),
           );

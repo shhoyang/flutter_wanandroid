@@ -1,8 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:flutter_wanandroid/api/api_service.dart';
 import 'package:flutter_wanandroid/api/http_code.dart';
-import 'package:flutter_wanandroid/global_config.dart';
+
+import '../global_config.dart';
 
 class DioManager {
   static DioManager _instance;
@@ -17,13 +22,30 @@ class DioManager {
 
   Dio _dio = Dio();
 
+  PersistCookieJar _cookieJar;
+
   DioManager() {
     _dio.options.headers = {};
 
-    _dio.options.baseUrl = "https://wanandroid.com/";
+    _dio.options.baseUrl = ApiService.base;
     _dio.options.connectTimeout = 5000;
     _dio.options.receiveTimeout = 5000;
     _dio.interceptors.add(LogInterceptor());
+
+    String path =
+        "/data/user/0/com.hao.flutter_wanandroid/app_flutter/.cookies";
+    _cookieJar = PersistCookieJar(dir: path);
+    _dio.interceptors.add(CookieManager(_cookieJar));
+  }
+
+  clearCookies() {
+    _cookieJar?.deleteAll();
+  }
+
+  List<Cookie> getCookies() {
+    List<Cookie> results = _cookieJar
+        .loadForRequest(Uri.parse(ApiService.base + ApiService.login));
+    return results;
   }
 
   get(String url, Function successCallBack,

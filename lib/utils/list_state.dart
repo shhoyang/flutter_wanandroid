@@ -20,15 +20,23 @@ class ListState {
   static const int noData = 0x00000001;
 
   static void setController(RefreshController refreshController, int state) {
-    if (noMore & noData & state < 1) {
-      refreshController?.loadNoData();
-    }
-
-    if (state & refresh > 0) {
-      refreshController?.refreshCompleted();
+    if (refresh & state > 0) {
+      if (succeed & state > 0) {
+        refreshController?.refreshCompleted(resetFooterState: true);
+        if ((noMore | noData) & state > 0) {
+          refreshController?.loadNoData();
+        }
+      } else {
+        refreshController?.refreshFailed();
+        refreshController?.loadNoData();
+      }
     } else {
-      if (state > 0) {
-        refreshController?.loadComplete();
+      if (succeed & state > 0) {
+        if (noMore & state > 0) {
+          refreshController?.loadNoData();
+        } else {
+          refreshController?.loadComplete();
+        }
       } else {
         refreshController?.loadFailed();
       }

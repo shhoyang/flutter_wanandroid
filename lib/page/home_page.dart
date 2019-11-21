@@ -3,6 +3,7 @@ import 'package:flutter_wanandroid/bloc/bloc_provider.dart';
 import 'package:flutter_wanandroid/bloc/knowledge_bloc.dart';
 import 'package:flutter_wanandroid/bloc/project_bloc.dart';
 import 'package:flutter_wanandroid/bloc/wechat_bloc.dart';
+import 'package:flutter_wanandroid/widget/style/h_colors.dart';
 import 'package:flutter_wanandroid/constant/strings.dart';
 import 'package:flutter_wanandroid/page/knowledge_page.dart';
 import 'package:flutter_wanandroid/page/me_page.dart';
@@ -18,8 +19,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage>
     with AutomaticKeepAliveClientMixin {
   final TextStyle _styleNormal =
-      TextStyle(fontSize: 12.0, color: Color(0xFF8A8A8A));
-  final TextStyle _styleActive = TextStyle(fontSize: 12.0, color: Colors.black);
+      TextStyle(fontSize: 12.0, color: HColors.navTabNormal);
+  final TextStyle _styleActive =
+      TextStyle(fontSize: 12.0, color: HColors.navTabActive);
 
   int _tabIndex = 0;
   List<Widget> _page;
@@ -35,14 +37,15 @@ class _HomePageState extends State<HomePage>
     _page = [
       BlocProvider<WechatBloc>(bloc: WechatBloc(), child: WechatPage()),
       BlocProvider<ProjectBloc>(bloc: ProjectBloc(), child: ProjectPage()),
-      BlocProvider<KnowledgeBloc>(bloc: KnowledgeBloc(), child: KnowledgePage()),
+      BlocProvider<KnowledgeBloc>(
+          bloc: KnowledgeBloc(), child: KnowledgePage()),
       MePage()
     ];
     tabs = [
-      TabItem(Strings.home, "home_normal", "home_active"),
-      TabItem(Strings.project, "project_normal", "project_active"),
-      TabItem(Strings.knowledge, "knowledge_normal", "knowledge_active"),
-      TabItem(Strings.me, "me_normal", "me_active")
+      TabItem(Strings.home, "tab_home_normal", "tab_home_active"),
+      TabItem(Strings.project, "tab_project_normal", "tab_project_active"),
+      TabItem(Strings.knowledge, "tab_knowledge_normal", "tab_knowledge_active"),
+      TabItem(Strings.me, "tab_me_normal", "tab_me_active")
     ];
   }
 

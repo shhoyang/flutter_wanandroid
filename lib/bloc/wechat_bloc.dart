@@ -30,7 +30,7 @@ class WechatBloc extends BaseBloc {
   @override
   void loadData([int page]) async {
     _getBanner();
-    DioManager.getInstance().get(ApiService.getUrl(ApiService.WX_AUTHORS), (data) {
+    DioManager.getInstance().get(ApiService.getUrl(ApiService.wxAuthors), (data) {
       List list = data;
       _list = list.map((item) {
         return WxAuthor.fromJson(item);
@@ -40,7 +40,7 @@ class WechatBloc extends BaseBloc {
   }
 
   void _getBanner() async {
-    DioManager.getInstance().get(ApiService.getUrl(ApiService.BANNER), (data) {
+    DioManager.getInstance().get(ApiService.getUrl(ApiService.banner), (data) {
       List list = data;
       var banners = list.map((item) {
         return BannerItem.fromJson(item);
@@ -48,7 +48,9 @@ class WechatBloc extends BaseBloc {
       if (banners != null && banners.isNotEmpty) {
         _bannerSink.add(banners);
       }
-    }, errorCallBack: (code, msg) {});
+    }, errorCallBack: (code, msg) {
+      print(msg);
+    });
   }
 
   @override

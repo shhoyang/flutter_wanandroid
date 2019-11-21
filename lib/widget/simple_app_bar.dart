@@ -6,5 +6,5 @@ class SimpleAppBar extends AppBar {
   final List<Widget> menus;
 
   SimpleAppBar(this.titleText, {this.menus})
-      : super(centerTitle: true, title: new Text(titleText), actions: menus);
+      : super(centerTitle: true, title:  Text(titleText), actions: menus);
 }

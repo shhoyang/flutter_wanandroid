@@ -11,7 +11,7 @@ class SearchResultBloc extends BaseListBloc<Article> {
   @override
   void loadData([int page]) async {
     DioManager.getInstance()
-        .post(ApiService.getUrl(ApiService.SEARCH, page: page - 1), (data) {
+        .post(ApiService.getUrl(ApiService.search, page: page - 1), (data) {
       List list = data["datas"];
       List<Article> temp = list.map((item) {
         return Article.fromJson(item);

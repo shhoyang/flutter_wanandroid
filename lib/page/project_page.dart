@@ -5,6 +5,7 @@ import 'package:flutter_wanandroid/bean/project_tree.dart';
 import 'package:flutter_wanandroid/bloc/bloc_provider.dart';
 import 'package:flutter_wanandroid/bloc/project_bloc.dart';
 import 'package:flutter_wanandroid/bloc/project_list_bloc.dart';
+import 'package:flutter_wanandroid/widget/style/h_colors.dart';
 import 'package:flutter_wanandroid/constant/strings.dart';
 import 'package:flutter_wanandroid/page/project_list_page.dart';
 import 'package:flutter_wanandroid/utils/common_utils.dart';
@@ -12,7 +13,8 @@ import 'package:flutter_wanandroid/utils/list_state.dart';
 import 'package:flutter_wanandroid/utils/navigator_utils.dart';
 import 'package:flutter_wanandroid/widget/article_item.dart';
 import 'package:flutter_wanandroid/widget/simple_app_bar.dart';
-import 'package:flutter_wanandroid/widget/space.dart';
+import 'package:flutter_wanandroid/widget/style/h_radius.dart';
+import 'package:flutter_wanandroid/widget/style/space.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class ProjectPage extends StatefulWidget {
@@ -50,7 +52,7 @@ class _ProjectPageState extends State<ProjectPage>
                   itemBuilder: (BuildContext context, int index) {
                     ProjectTree projectTree = snapshot.data[index];
                     return InkWell(
-                      child: new Column(
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Image.asset(
@@ -66,8 +68,7 @@ class _ProjectPageState extends State<ProjectPage>
                           )
                         ],
                       ),
-                      borderRadius:
-                          new BorderRadius.all(new Radius.circular(50.0)),
+                      borderRadius: HRadius.r50,
                       onTap: () {
                         NavigatorUtils.pushPage(
                           context,
@@ -83,8 +84,10 @@ class _ProjectPageState extends State<ProjectPage>
                   });
             }),
         decoration: BoxDecoration(
-            border: Border(
-                bottom: BorderSide(width: 8.0, color: Color(0xFFF0F0F0)))),
+          border: Border(
+            bottom: BorderSide(width: 8.0, color: HColors.line),
+          ),
+        ),
       );
     }
 
@@ -101,8 +104,7 @@ class _ProjectPageState extends State<ProjectPage>
       List<Widget> list = [];
       list.add(_buildProjectType());
       data.forEach((article) {
-        list.add(ArticleItem(
-            article: article, onPressed: () {}, onFavPressed: () {}));
+        list.add(ArticleItem(article: article));
       });
 
       return list;

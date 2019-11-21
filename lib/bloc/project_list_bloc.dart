@@ -11,7 +11,7 @@ class ProjectListBloc extends BaseListBloc<Article> {
   @override
   void loadData([int page]) async {
     DioManager.getInstance()
-        .get(ApiService.getUrl(ApiService.PROJECT_LIST, page: page), (data) {
+        .get(ApiService.getUrl(ApiService.projectList, page: page), (data) {
       List list = data["datas"];
       List<Article> temp = list.map((item) {
         return Article.fromJson(item);

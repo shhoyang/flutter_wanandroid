@@ -32,7 +32,7 @@ class ProjectBloc extends BaseListBloc<Article> {
   @override
   void loadData([int page]) async {
     DioManager.getInstance()
-        .get(ApiService.getUrl(ApiService.PROJECT_NEW_LIST, page: page - 1),
+        .get(ApiService.getUrl(ApiService.projectNewList, page: page - 1),
             (data) {
       List list = data["datas"];
       List<Article> temp = list.map((item) {
@@ -43,7 +43,7 @@ class ProjectBloc extends BaseListBloc<Article> {
   }
 
   void _getProjectTree() async {
-    DioManager.getInstance().get(ApiService.getUrl(ApiService.PROJECT_TREE),
+    DioManager.getInstance().get(ApiService.getUrl(ApiService.projectTree),
         (data) {
       List list = data;
       var types = list.map((item) {

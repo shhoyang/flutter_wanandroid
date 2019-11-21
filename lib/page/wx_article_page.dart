@@ -16,17 +16,29 @@ class WxArticlePage extends StatefulWidget {
 }
 
 class _WxArticlePageState extends State<WxArticlePage>
-    with AutomaticKeepAliveClientMixin {
+    with AutomaticKeepAliveClientMixin<WxArticlePage>, WidgetsBindingObserver {
+
   RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
+      RefreshController(initialRefresh: false);
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  WxArticleBloc bloc;
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    WxArticleBloc bloc = BlocProvider.of<WxArticleBloc>(context);
-    bloc.stateStream.listen((state) {
-      ListState.setController(_refreshController, state);
-    });
+    if (bloc == null) {
+      bloc = BlocProvider.of<WxArticleBloc>(context);
+      bloc.stateStream.listen((state) {
+        ListState.setController(_refreshController, state);
+      });
+    }
+
     return StreamBuilder(
         stream: bloc.stream,
         builder: (BuildContext context, AsyncSnapshot<List<Article>> snapshot) {
@@ -49,9 +61,20 @@ class _WxArticlePageState extends State<WxArticlePage>
   @override
   void dispose() {
     _refreshController?.dispose();
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
   @override
   bool get wantKeepAlive => true;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+  }
 }

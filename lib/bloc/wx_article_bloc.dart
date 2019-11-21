@@ -11,7 +11,7 @@ class WxArticleBloc extends BaseListBloc<Article> {
   @override
   void loadData([int page]) async {
     DioManager.getInstance().get(
-        ApiService.getUrl(ApiService.WX_ARTICLE_LIST, id: authorId, page: page),
+        ApiService.getUrl(ApiService.wxArticleList, id: authorId, page: page),
         (data) {
       List list = data["datas"];
       List<Article> temp = list.map((item) {

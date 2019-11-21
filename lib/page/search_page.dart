@@ -3,9 +3,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_wanandroid/bean/hot_word.dart';
 import 'package:flutter_wanandroid/bloc/bloc_provider.dart';
 import 'package:flutter_wanandroid/bloc/search_bloc.dart';
-import 'package:flutter_wanandroid/constant/h_colors.dart';
+import 'package:flutter_wanandroid/widget/style/h_colors.dart';
 import 'package:flutter_wanandroid/utils/navigator_utils.dart';
-import 'package:flutter_wanandroid/widget/space.dart';
+import 'package:flutter_wanandroid/widget/style/h_radius.dart';
+import 'package:flutter_wanandroid/widget/style/space.dart';
 
 class SearchPage extends StatefulWidget {
   @override
@@ -26,11 +27,11 @@ class _SearchPageState extends State<SearchPage> {
     SearchBloc bloc = BlocProvider.of<SearchBloc>(context);
 
     return Scaffold(
-      appBar: new AppBar(
+      appBar: AppBar(
         title: Row(
           children: <Widget>[
             Expanded(
-              child: new TextField(
+              child: TextField(
                 controller: _editingController,
                 decoration: InputDecoration(
                   hintText: "请输入搜索内容",
@@ -82,20 +83,16 @@ class _SearchPageState extends State<SearchPage> {
                         child: Text(
                           hotWord.name,
                           style: TextStyle(
-                            color: Color(HColors.hotWord),
+                            color: HColors.hotWord,
                             fontSize: 13.0,
                           ),
                         ),
                         decoration: BoxDecoration(
-                          border: Border.all(color: Color(HColors.hotWord)),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(32.0),
-                          ),
+                          border: Border.all(color: HColors.hotWord),
+                          borderRadius: HRadius.r32,
                         ),
                       ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(32.0),
-                      ),
+                      borderRadius: HRadius.r32,
                       onTap: () {
                         NavigatorUtils.pushSearchResult(context, hotWord.name);
                       },

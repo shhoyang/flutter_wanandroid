@@ -1,33 +1,35 @@
 class ApiService {
-  static const String BASE = "https://www.wanandroid.com/";
+  static const String base = "https://www.wanandroid.com/";
 
-  static const String BANNER = "banner";
+  static const String banner = "banner";
 
-  static const String WX_AUTHORS = "wxarticle/chapters";
+  static const String wxAuthors = "wxarticle/chapters";
 
-  static const String WX_ARTICLE_LIST = "wxarticle/list";
+  static const String wxArticleList = "wxarticle/list";
 
-  static const String PROJECT_TREE = "project/tree";
+  static const String projectTree = "project/tree";
 
-  static const String PROJECT_NEW_LIST = "article/listproject";
+  static const String projectNewList = "article/listproject";
 
   /// https://www.wanandroid.com/project/list/1/json?cid=294
-  static const String PROJECT_LIST = "project/list";
+  static const String projectList = "project/list";
 
-  static const String TREE = "tree";
+  static const String tree = "tree";
 
   /// https://www.wanandroid.com/article/list/0/json?cid=60
-  static const String TREE_PROJECT_LIST = "article/list";
+  static const String treeProjectList = "article/list";
 
-  static const String HOT_SEARCH = "hotkey";
+  static const String hotSearch = "hotkey";
 
   /// https://www.wanandroid.com/article/query/0/json  k
-  static const String SEARCH = "article/query";
+  static const String search = "article/query";
 
-  static String getUrl(String path, {int id, int page}) {
-    StringBuffer sb = StringBuffer(BASE);
+  static const String login = "user/login";
 
-    sb.write(path);
+  static const String register = "user/register";
+
+  static String getUrl(String path, {int id, int page, bool isJson = true}) {
+    StringBuffer sb = StringBuffer(path);
 
     if (id != null) {
       sb.write("/$id");
@@ -37,7 +39,9 @@ class ApiService {
       sb.write("/$page");
     }
 
-    sb.write("/json");
+    if (isJson) {
+      sb.write("/json");
+    }
 
     return sb.toString();
   }

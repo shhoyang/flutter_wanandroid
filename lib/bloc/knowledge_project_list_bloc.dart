@@ -11,7 +11,7 @@ class KnowledgeProjectListBloc extends BaseListBloc<Article> {
   @override
   void loadData([int page]) async {
     DioManager.getInstance()
-        .get(ApiService.getUrl(ApiService.TREE_PROJECT_LIST, page: page - 1),
+        .get(ApiService.getUrl(ApiService.treeProjectList, page: page - 1),
             (data) {
       List list = data["datas"];
       List<Article> temp = list.map((item) {

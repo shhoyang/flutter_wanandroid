@@ -8,7 +8,7 @@ class KnowledgeBloc extends BaseListBloc<ProjectTree> {
 
   @override
   void loadData([int page]) async {
-    DioManager.getInstance().get(ApiService.getUrl(ApiService.TREE), (data) {
+    DioManager.getInstance().get(ApiService.getUrl(ApiService.tree), (data) {
       List list = data;
       List<ProjectTree> temp = list.map((item) {
         return ProjectTree.fromJson(item);
