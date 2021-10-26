@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wanandroid/widget/style/h_colors.dart';
+import 'package:flutter_wanandroid/style/colors.dart';
 
 class TabPage extends StatefulWidget {
   final List<Widget> tabs;

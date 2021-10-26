@@ -6,58 +6,34 @@ import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:flutter_wanandroid/api/api_service.dart';
 import 'package:flutter_wanandroid/api/http_code.dart';
+import 'package:flutter_wanandroid/global_config.dart';
+import 'package:get/get.dart' as Getx;
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
-import '../global_config.dart';
-
+/// 已经全局注入，保证唯一，不要再通过构造方法创建对象
 class DioManager {
-  static DioManager _instance;
+  static DioManager of() => Getx.Get.find<DioManager>();
 
-  static DioManager getInstance() {
-    if (_instance == null) {
-      _instance = DioManager();
-    }
-
-    return _instance;
-  }
-
-  Dio _dio = Dio();
+  Dio _dio;
 
   PersistCookieJar _cookieJar;
-
-  DioManager() {
-    _dio.options.headers = {};
-
-    _dio.options.baseUrl = ApiService.base;
-    _dio.options.connectTimeout = 5000;
-    _dio.options.receiveTimeout = 5000;
-    _dio.interceptors.add(LogInterceptor());
-
-    String path =
-        "/data/user/0/com.hao.flutter_wanandroid/app_flutter/.cookies";
-    _cookieJar = PersistCookieJar(dir: path);
-    _dio.interceptors.add(CookieManager(_cookieJar));
-  }
 
   clearCookies() {
     _cookieJar?.deleteAll();
   }
 
   List<Cookie> getCookies() {
-    List<Cookie> results = _cookieJar
-        .loadForRequest(Uri.parse(ApiService.base + ApiService.login));
+    List<Cookie> results = _cookieJar.loadForRequest(Uri.parse(ApiService.base + ApiService.login));
     return results;
   }
 
-  get(String url, Function successCallBack,
-      {Map<String, dynamic> params, Function errorCallBack}) async {
-    _request(url, "get", successCallBack,
-        params: params, errorCallBack: errorCallBack);
+  get(String url, Function successCallBack, {Map<String, dynamic> params, Function errorCallBack}) async {
+    _request(url, "get", successCallBack, params: params, errorCallBack: errorCallBack);
   }
 
-  post(String url, Function successCallBack,
-      {Map<String, dynamic> params, Function errorCallBack}) async {
-    _request(url, "post", successCallBack,
-        params: params, errorCallBack: errorCallBack);
+  post(String url, Function successCallBack, {Map<String, dynamic> params, Function errorCallBack}) async {
+    _request(url, "post", successCallBack, params: params, errorCallBack: errorCallBack);
   }
 
   _request(
@@ -95,7 +71,7 @@ class DioManager {
         print("请求异常url：" + url);
       }
 
-      _error(errorCallBack, response.statusCode, error.message);
+      _error(errorCallBack, errorResponse.statusCode, "网络异常");
       return "";
     }
 
@@ -122,5 +98,18 @@ class DioManager {
     if (errorCallBack != null) {
       errorCallBack(errorCode, errorMsg);
     }
+  }
+
+  Future<void> initConfig() async {
+    _dio = Dio();
+    _dio.options.headers = {};
+    _dio.options.baseUrl = ApiService.base;
+    _dio.options.connectTimeout = 10000;
+    _dio.options.receiveTimeout = 10000;
+    _dio.interceptors.add(LogInterceptor());
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    String cookiesPath = join(appDocDir.path, ".cookies");
+    _cookieJar = PersistCookieJar(dir: cookiesPath);
+    _dio.interceptors.add(CookieManager(_cookieJar));
   }
 }

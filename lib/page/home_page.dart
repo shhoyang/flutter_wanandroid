@@ -1,56 +1,65 @@
+/// @Author: Yang Shihao
+/// @Date: 2021-01-06
+
 import 'package:flutter/material.dart';
-import 'package:flutter_wanandroid/bloc/bloc_provider.dart';
-import 'package:flutter_wanandroid/bloc/knowledge_bloc.dart';
-import 'package:flutter_wanandroid/bloc/project_bloc.dart';
-import 'package:flutter_wanandroid/bloc/wechat_bloc.dart';
-import 'package:flutter_wanandroid/widget/style/h_colors.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:flutter_wanandroid/constant/strings.dart';
-import 'package:flutter_wanandroid/page/knowledge_page.dart';
-import 'package:flutter_wanandroid/page/me_page.dart';
-import 'package:flutter_wanandroid/page/project_page.dart';
-import 'package:flutter_wanandroid/page/wechat_page.dart';
-import 'package:flutter_wanandroid/utils/common_utils.dart';
+import 'package:flutter_wanandroid/page/pages.dart';
+import 'package:flutter_wanandroid/style/colors.dart';
+import 'package:flutter_wanandroid/constant/images.dart';
 
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with AutomaticKeepAliveClientMixin {
-  final TextStyle _styleNormal =
-      TextStyle(fontSize: 12.0, color: HColors.navTabNormal);
-  final TextStyle _styleActive =
-      TextStyle(fontSize: 12.0, color: HColors.navTabActive);
-
+class _HomePageState extends State<HomePage> {
   int _tabIndex = 0;
-  List<Widget> _page;
-  List<TabItem> tabs;
 
   @override
-  void initState() {
-    super.initState();
-    _initData();
+  Widget build(BuildContext context) {
+    List<BottomNavigationBarItem> tabs = [
+      BottomNavigationBarItem(
+        label: Strings.wechat,
+        icon: _getIcon(Images.iconWechat, HColors.tabNormal),
+        activeIcon: _getIcon(Images.iconWechat, HColors.tabActive),
+      ),
+      BottomNavigationBarItem(
+        label: Strings.project,
+        icon: _getIcon(Images.iconAndroid, HColors.tabNormal),
+        activeIcon: _getIcon(Images.iconAndroid, HColors.tabActive),
+      ),
+      BottomNavigationBarItem(
+        label: Strings.knowledge,
+        icon: _getIcon(Images.iconKnowledge, HColors.tabNormal),
+        activeIcon: _getIcon(Images.iconKnowledge, HColors.tabActive),
+      ),
+      BottomNavigationBarItem(
+        label: Strings.search,
+        icon: _getIcon(Images.iconSearch, HColors.tabNormal),
+        activeIcon: _getIcon(Images.iconSearch, HColors.tabActive),
+      ),
+    ];
+    List<Widget> pages = [WechatPage(), ProjectPage(), KnowledgePage(), SearchPage()];
+    return Scaffold(
+      drawer: Drawer(child: DrawerPage()),
+      body: IndexedStack(children: pages, index: _tabIndex),
+      bottomNavigationBar: BottomNavigationBar(
+        items: tabs,
+        type: BottomNavigationBarType.fixed,
+        currentIndex: _tabIndex,
+        onTap: _onTabTaped,
+      ),
+    );
   }
 
-  _initData() {
-    _page = [
-      BlocProvider<WechatBloc>(bloc: WechatBloc(), child: WechatPage()),
-      BlocProvider<ProjectBloc>(bloc: ProjectBloc(), child: ProjectPage()),
-      BlocProvider<KnowledgeBloc>(
-          bloc: KnowledgeBloc(), child: KnowledgePage()),
-      MePage()
-    ];
-    tabs = [
-      TabItem(Strings.home, "tab_home_normal", "tab_home_active"),
-      TabItem(Strings.project, "tab_project_normal", "tab_project_active"),
-      TabItem(Strings.knowledge, "tab_knowledge_normal", "tab_knowledge_active"),
-      TabItem(Strings.me, "tab_me_normal", "tab_me_active")
-    ];
-  }
-
-  Widget _getIcon(path) {
-    return Image.asset(CommonUtils.getImage(path), width: 24.0, height: 24.0);
+  Widget _getIcon(String name, Color color) {
+    return SvgPicture.asset(
+      name,
+      width: 24.0,
+      height: 24.0,
+      color: color,
+    );
   }
 
   void _onTabTaped(int index) {
@@ -60,58 +69,4 @@ class _HomePageState extends State<HomePage>
       });
     }
   }
-
-  BottomNavigationBarItem _createBarItem(TabItem tabItem) {
-    return BottomNavigationBarItem(
-      icon: _getIcon(tabItem.icon),
-      activeIcon: _getIcon(tabItem.activeIcon),
-      title: Text(
-        tabItem.title,
-        style: tabs.indexOf(tabItem) == _tabIndex ? _styleActive : _styleNormal,
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return Scaffold(
-//      body:  PageView.builder(
-//          physics: NeverScrollableScrollPhysics(),
-//          controller: _pageController,
-//          itemCount: tabs.length,
-//          onPageChanged: (index) {
-//            if (index != _tabIndex) {
-//              setState(() {
-//                _tabIndex = index;
-//              });
-//            }
-//          },
-//          itemBuilder: (context, index) {
-//            return _page[index];
-//          }),
-      body: IndexedStack(
-        children: _page,
-        index: _tabIndex,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: tabs.map(_createBarItem).toList(),
-        type: BottomNavigationBarType.fixed,
-        currentIndex: _tabIndex,
-        iconSize: 24.0,
-        onTap: _onTabTaped,
-      ),
-    );
-  }
-
-  @override
-  bool get wantKeepAlive => true;
-}
-
-class TabItem {
-  String title;
-  String icon;
-  String activeIcon;
-
-  TabItem(this.title, this.icon, this.activeIcon);
 }

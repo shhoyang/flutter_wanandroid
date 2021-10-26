@@ -8,26 +8,20 @@ class ArticleList {
   final List<Article> data;
   final bool showAuthor;
   final bool showChapter;
-  final VoidCallback refresh;
 
   ArticleList(
-      {this.data,
-      this.showAuthor = true,
-      this.showChapter = false,
-      this.refresh});
+      {@required this.data, this.showAuthor = true, this.showChapter = false});
 
   Widget build(BuildContext context) {
     if (data == null) {
-      refresh();
       return LoadingView();
     }
 
     if (data.isEmpty) {
       return EmptyView();
     }
-    
+
     return ListView.builder(
-//      physics: new BouncingScrollPhysics(),
       itemCount: data == null ? 0 : data.length,
       itemBuilder: (BuildContext context, int index) {
         return ArticleItem(

@@ -1,23 +1,23 @@
 class ApiService {
   static const String base = "https://www.wanandroid.com/";
 
-  static const String banner = "banner";
+  static const String ad = "banner";
 
-  static const String wxAuthors = "wxarticle/chapters";
+  static const String authors = "wxarticle/chapters";
 
-  static const String wxArticleList = "wxarticle/list";
+  static const String wechatArticle = "wxarticle/list";
 
   static const String projectTree = "project/tree";
 
-  static const String projectNewList = "article/listproject";
+  static const String projectNewArticle = "article/listproject";
 
   /// https://www.wanandroid.com/project/list/1/json?cid=294
-  static const String projectList = "project/list";
+  static const String projectArticle = "project/list";
 
-  static const String tree = "tree";
+  static const String knowledgeTree = "tree";
 
   /// https://www.wanandroid.com/article/list/0/json?cid=60
-  static const String treeProjectList = "article/list";
+  static const String knowledgeArticle = "article/list";
 
   static const String hotSearch = "hotkey";
 

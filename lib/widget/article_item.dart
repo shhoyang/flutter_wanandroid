@@ -1,183 +1,206 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:flutter_wanandroid/bean/article.dart';
-import 'package:flutter_wanandroid/widget/style/h_colors.dart';
-import 'package:flutter_wanandroid/utils/common_utils.dart';
+import 'package:flutter_wanandroid/constant/strings.dart';
+import 'package:flutter_wanandroid/style/colors.dart';
+import 'package:flutter_wanandroid/style/text_styles.dart';
+import 'package:flutter_wanandroid/constant/images.dart';
 import 'package:flutter_wanandroid/utils/navigator_utils.dart';
-import 'package:flutter_wanandroid/widget/style/h_radius.dart';
-import 'package:flutter_wanandroid/widget/style/space.dart';
-import 'package:flutter_wanandroid/widget/style/text_styles.dart';
+import 'package:flutter_wanandroid/style/radius.dart';
+import 'package:flutter_wanandroid/style/space.dart';
 
-class ArticleItem extends StatefulWidget {
+class ArticleItem extends StatelessWidget {
   final Article article;
   final bool showAuthor;
   final bool showChapter;
 
   ArticleItem({
     Key key,
-    this.article,
+    @required this.article,
     this.showAuthor = true,
     this.showChapter = false,
   }) : super(key: key);
-
-  @override
-  _ArticleItemState createState() => _ArticleItemState();
-}
-
-class _ArticleItemState extends State<ArticleItem> {
-  @override
-  Widget build(BuildContext context) {
-    return _buildItem(context, widget.article);
-  }
-
-  Widget _buildImage(Article article) {
-    if (article.envelopePic == null || article.envelopePic.isEmpty) {
-      return Container();
-    }
-
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Expanded(
-          flex: 1,
-          child: AspectRatio(
-            aspectRatio: 9 / 16,
-            child: CachedNetworkImage(
-              imageUrl: article.envelopePic,
-            ),
-          ),
-        ),
-        Space.h16,
-        Expanded(
-          flex: 3,
-          child: Text(
-            article.desc,
-            maxLines: 6,
-            style: TextStyles.listSubtitle,
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget _buildExtra(BuildContext context, Article article) {
     Widget chapter;
     Widget author;
     Widget link;
 
-    if (article.chapterName != null &&
-        article.chapterName.isNotEmpty &&
-        widget.showChapter) {
+    if (article.chapterName != null && article.chapterName.isNotEmpty && showChapter) {
       chapter = Container(
         padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 3.0),
         child: Text(
           article.chapterName,
-          style: TextStyle(color: HColors.white, fontSize: 10.0),
+          style: TextStyles.caption(context).copyWith(color: HColors.white, fontSize: 10.0),
         ),
-        decoration: BoxDecoration(
-          color: HColors.tag,
-          borderRadius: HRadius.r4,
-        ),
+        decoration: BoxDecoration(color: HColors.tag, borderRadius: HRadius.r4),
       );
     }
 
-    if (article.author != null &&
-        article.author.isNotEmpty &&
-        widget.showAuthor) {
-      author = Text(article.author, style: TextStyles.listExtra);
+    if (article.author != null && article.author.isNotEmpty && showAuthor) {
+      author = Text(article.author, style: TextStyles.caption(context));
     }
 
     if (article.projectLink != null && article.projectLink.isNotEmpty) {
       link = InkWell(
         child: Text(
-          "项目链接",
-          style: TextStyle(
-            color: HColors.link,
-            fontSize: 12.0,
+          Strings.link,
+          style: TextStyles.caption(context).copyWith(
+            color: HColors.textLink,
             decoration: TextDecoration.underline,
           ),
         ),
         onTap: () {
-          NavigatorUtils.pushWeb(context, article.title, article.projectLink);
+          NavigatorUtils.pushWeb(context, article.showTitle, article.projectLink);
         },
       );
     }
 
-    List<Widget> list = [];
+    List<Widget> children = [];
 
     if (chapter != null) {
-      list.add(chapter);
-      list.add(Space.h8);
+      children.add(chapter);
+      children.add(Space.h8);
     }
-
-    list.add(Text(
-      article.niceDate,
-      style: TextStyles.listExtra,
-    ));
-    list.add(Space.h8);
 
     if (author != null) {
-      list.add(author);
-      list.add(Space.h8);
+      children.add(author);
+      children.add(Space.h8);
     }
 
-    list.add(Expanded(child: Container()));
+    children.add(
+      Text(
+        article.niceDate,
+        style: TextStyles.caption(context),
+      ),
+    );
+
+    children.add(Expanded(child: Container()));
 
     if (link != null) {
-      list.add(link);
-      list.add(Space.h8);
+      children.add(link);
+      children.add(Space.h8);
     }
 
-    list.add(InkWell(
-      child: Image.asset(
-        CommonUtils.getImage(article.collect ? "icon_fav_ed" : "icon_fav_un"),
-        width: 32.0,
-        height: 32.0,
+    children.add(
+      InkWell(
+        child: SvgPicture.asset(
+          article.collect ? Images.iconFavoriteEd : Images.iconFavoriteUn,
+          width: 24.0,
+          height: 24.0,
+          color: article.collect ? HColors.favoriteEd : HColors.favoriteUn,
+        ),
+        onTap: () {},
       ),
-      onTap: () {},
-    ));
+    );
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
-      children: list,
+      children: children,
     );
   }
 
-  Widget _buildItem(BuildContext context, Article article) {
-    return InkWell(
-      child: Card(
-        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-        elevation: 4.0,
-        shape: const RoundedRectangleBorder(
-          borderRadius: const BorderRadius.only(
-            topLeft: const Radius.circular(16.0),
-            bottomRight: Radius.circular(16.0),
-          ),
+  /// 不带图片
+  List<Widget> _buildItemNoImage(BuildContext context, Article article) {
+    List<Widget> children = [];
+    children.add(
+      Text(
+        article.showTitle,
+        maxLines: 2,
+        overflow: TextOverflow.ellipsis,
+        style: TextStyles.title1(context),
+      ),
+    );
+    children.add(Space.v8);
+    if (article.desc != null && article.desc.isNotEmpty) {
+      children.add(
+        Text(
+          article.showDesc,
+          maxLines: 4,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyles.subtitle1(context),
         ),
-        child: Container(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // 标题
-              Text(
-                article.title,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyles.listTitle,
+      );
+      children.add(Space.v8);
+    }
+
+    children.add(_buildExtra(context, article));
+    return children;
+  }
+
+  /// 带图片
+  List<Widget> _buildItemWithImage(BuildContext context, Article article) {
+    List<Widget> children = [];
+    children.add(
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 1,
+            child: AspectRatio(
+              aspectRatio: 9 / 16,
+              child: CachedNetworkImage(
+                imageUrl: article.envelopePic,
               ),
-              Space.v8,
-              // 图片
-              _buildImage(article),
-              // 底部
-              _buildExtra(context, article),
-            ],
+            ),
           ),
+          Space.h8,
+          Expanded(
+            flex: 3,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  article.showTitle,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyles.title1(context),
+                ),
+                Space.v8,
+                Text(
+                  article.showDesc,
+                  maxLines: 4,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyles.subtitle1(context),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+    children.add(Space.v8);
+    children.add(_buildExtra(context, article));
+    return children;
+  }
+
+  Widget _buildItem(BuildContext context, Article article) {
+    List<Widget> children;
+    if (article.envelopePic == null || article.envelopePic.isEmpty) {
+      children = _buildItemNoImage(context, article);
+    } else {
+      children = _buildItemWithImage(context, article);
+    }
+
+    return InkWell(
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        padding: const EdgeInsets.all(8.0),
+        color: HColors.grayWhite,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: children,
         ),
       ),
       onTap: () {
-        NavigatorUtils.pushWeb(context, article.title, article.link);
+        NavigatorUtils.pushWeb(context, article.showTitle, article.link);
       },
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _buildItem(context, article);
   }
 }

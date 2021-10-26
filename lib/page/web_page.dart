@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/widget/simple_app_bar.dart';
-import 'package:flutter_wanandroid/widget/state/loading_view.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebPage extends StatefulWidget {
@@ -15,29 +15,20 @@ class WebPage extends StatefulWidget {
 }
 
 class _WebPageState extends State<WebPage> {
-  int _index = 0;
+  final Completer<WebViewController> _completer = Completer();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: SimpleAppBar(widget.title),
-      body: IndexedStack(
-        children: <Widget>[
-          Center(
-            child: LoadingView(),
-          ),
-          WebView(
-            javascriptMode: JavascriptMode.unrestricted,
-            onWebViewCreated: (WebViewController webViewController) {},
-            onPageFinished: (s) {
-              setState(() {
-                _index = 1;
-              });
-            },
-            initialUrl: widget.url,
-          ),
-        ],
-        index: _index,
+      appBar: SimpleAppBar(
+        widget.title,
+      ),
+      body: WebView(
+        initialUrl: widget.url,
+        javascriptMode: JavascriptMode.unrestricted,
+        onWebViewCreated: (WebViewController webViewController) {
+          _completer.complete(webViewController);
+        },
       ),
     );
   }
