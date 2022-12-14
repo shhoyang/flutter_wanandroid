@@ -1,24 +1,33 @@
-/// @Author: Yang Shihao
-/// @Date: 2021-01-06
-
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/style/colors.dart';
 
+/// @Author: Yang Shihao
+/// @Date: 2021-01-06
+
 class Input extends StatefulWidget {
   final TextEditingController controller;
-  final IconData prefixIcon;
-  final String labelText;
-  final String helpText;
+  final IconData? prefixIcon;
+  final String? labelText;
+  final String? helpText;
   final bool obscureText;
+  final FormFieldValidator<String>? validator;
 
-  Input({Key key, this.controller, this.prefixIcon, this.labelText, this.helpText, this.obscureText}) : super(key: key);
+  Input(
+      {Key? key,
+      required this.controller,
+      this.prefixIcon,
+      this.labelText,
+      this.helpText,
+      this.obscureText = false,
+      this.validator})
+      : super(key: key);
 
   @override
   _InputState createState() => _InputState();
 }
 
 class _InputState extends State<Input> {
-  bool _obscureText;
+  late bool _obscureText;
 
   @override
   void initState() {
@@ -28,7 +37,7 @@ class _InputState extends State<Input> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: widget.controller,
       obscureText: _obscureText,
       style: TextStyle(color: HColors.textWhite, height: 1.2),
@@ -54,6 +63,7 @@ class _InputState extends State<Input> {
             : null,
         enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: HColors.white)),
       ),
+      validator: widget.validator,
     );
   }
 }

@@ -1,16 +1,13 @@
-/// @Author: Yang Shihao
-/// @Date: 2021-01-14
-
-export 'package:flutter_wanandroid/page/project_article_page.dart';
-export 'package:flutter_wanandroid/page/knowledge_page.dart';
-export 'package:flutter_wanandroid/page/knowledge_article_page.dart';
-export 'package:flutter_wanandroid/page/wechat_article_page.dart';
-export 'package:flutter_wanandroid/page/web_page.dart';
-export 'package:flutter_wanandroid/page/text_page.dart';
-export 'package:flutter_wanandroid/page/project_page.dart';
-export 'package:flutter_wanandroid/page/login_page.dart';
-export 'package:flutter_wanandroid/page/wechat_page.dart';
-export 'package:flutter_wanandroid/page/home_page.dart';
-export 'package:flutter_wanandroid/page/search_result_page.dart';
 export 'package:flutter_wanandroid/page/drawer_page.dart';
-export 'package:flutter_wanandroid/page/search_page.dart';
+export 'package:flutter_wanandroid/page/home/home_page.dart';
+export 'package:flutter_wanandroid/page/knowledge/knowledge_article/knowledge_article_page.dart';
+export 'package:flutter_wanandroid/page/knowledge/knowledge_page.dart';
+export 'package:flutter_wanandroid/page/login/login_page.dart';
+export 'package:flutter_wanandroid/page/project/project_article/project_article_page.dart';
+export 'package:flutter_wanandroid/page/project/project_page.dart';
+export 'package:flutter_wanandroid/page/search/search_page.dart';
+export 'package:flutter_wanandroid/page/search/search_result/search_result_page.dart';
+export 'package:flutter_wanandroid/page/text_page.dart';
+export 'package:flutter_wanandroid/page/web_page.dart';
+export 'package:flutter_wanandroid/page/wechat/wechat_article/wechat_article_page.dart';
+export 'package:flutter_wanandroid/page/wechat/wechat_page.dart';

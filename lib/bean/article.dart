@@ -5,17 +5,17 @@ part 'article.g.dart';
 
 @JsonSerializable()
 class Article extends Object {
-  String author;
-  String chapterName;
-  bool collect;
-  String desc;
-  String envelopePic;
-  int id;
-  String link;
-  String niceDate;
-  String origin;
-  String projectLink;
-  String title;
+  String? author;
+  String? chapterName;
+  bool? collect;
+  String? desc;
+  String? envelopePic;
+  int? id;
+  String? link;
+  String? niceDate;
+  String? origin;
+  String? projectLink;
+  String? title;
 
   Article(
     this.author,

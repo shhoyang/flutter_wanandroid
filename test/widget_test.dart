@@ -1,6 +1,3 @@
-/// @Author: Yang Shihao
-/// @Date: 2021-01-06
-
 // This is a basic Flutter widget test.
 //
 // To perform an interaction with a widget in your test, use the WidgetTester
@@ -48,7 +45,8 @@ void generateExport(String path) {
       if (f.path.endsWith("DS_Store")) {
         continue;
       }
-      print("export 'package:$projectPackageName/$path/${f.path.split("/").last}';");
+      print(
+          "export 'package:$projectPackageName/$path/${f.path.split("/").last}';");
     }
   } catch (e) {
     print(e);
@@ -60,7 +58,8 @@ String under2Hump(String under) {
     return under;
   }
   String hump = "";
-  List<String> arr = under.substring(0, under.indexOf(".")).toLowerCase().split("_");
+  List<String> arr =
+      under.substring(0, under.indexOf(".")).toLowerCase().split("_");
   for (int i = 0; i < arr.length; i++) {
     if (i == 0) {
       hump += arr[i];

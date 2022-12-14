@@ -1,26 +1,23 @@
-/// @Author: Yang Shihao
-/// @Date: 2021-01-06
-
-/// @Author: Yang Shihao
-/// @Date: 2021-01-06
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_wanandroid/app_init.dart';
-import 'package:flutter_wanandroid/page/home_page.dart';
-import 'package:flutter_wanandroid/routes/pages.dart';
+import 'package:flutter_wanandroid/routes/routes.dart';
 import 'package:flutter_wanandroid/style/app_theme.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:flutter_wanandroid/test.dart';
+
+/// @Author: Yang Shihao
+/// @Date: 2021-01-06
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // debugPaintLayerBordersEnabled= true;
   await AppInit.init();
   runApp(MyApp());
   if (Platform.isAndroid) {
     /// 以下两行 设置android状态栏为透明的沉浸。写在组件渲染之后，是为了在渲染后进行set赋值，覆盖状态栏，写在渲染之前MaterialApp组件会覆盖掉这个值。
-    SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+    var systemUiOverlayStyle = SystemUiOverlayStyle(statusBarColor: Colors.transparent);
     SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
 
     /// SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.bottom]);
@@ -30,12 +27,11 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MaterialApp(
       title: 'Wan Android',
-      home: HomePage(),
       theme: appThemeData(context),
-      initialRoute: '/',
-      getPages: GetPages.pages,
+      initialRoute: Routes.HOME,
+      routes: Routes.routes,
       debugShowCheckedModeBanner: false,
       builder: (context, child) => Scaffold(
         body: GestureDetector(
@@ -51,7 +47,7 @@ class MyApp extends StatelessWidget {
   void _hideKeyboard(BuildContext context) {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-      FocusManager.instance.primaryFocus.unfocus();
+      FocusManager.instance.primaryFocus?.unfocus();
     }
   }
 }

@@ -14,39 +14,39 @@ abstract class TextStyles {
   ///
   static TextStyle title1(BuildContext context) => Theme.of(context)
       .textTheme
-      .headline6
+      .headline6!
       .copyWith(color: HColors.textTitle, fontSize: 16.0);
 
   static TextStyle title2(BuildContext context) =>
-      Theme.of(context).textTheme.headline6.copyWith(
+      Theme.of(context).textTheme.headline6!.copyWith(
           color: HColors.textTitle,
           fontSize: 16.0,
           fontWeight: FontWeight.bold);
 
   static TextStyle subtitle1(BuildContext context) => Theme.of(context)
       .textTheme
-      .subtitle1
+      .subtitle1!
       .copyWith(color: HColors.textSubtitle, fontSize: 14.0);
 
   static TextStyle subtitle2(BuildContext context) => Theme.of(context)
       .textTheme
-      .subtitle2
+      .subtitle2!
       .copyWith(fontWeight: FontWeight.bold);
 
   static TextStyle bodyText1(BuildContext context) =>
-      Theme.of(context).textTheme.bodyText2;
+      Theme.of(context).textTheme.bodyText2!;
 
   static TextStyle bodyText2(BuildContext context) => Theme.of(context)
       .textTheme
-      .bodyText1
+      .bodyText1!
       .copyWith(fontWeight: FontWeight.bold);
 
   static TextStyle caption(BuildContext context) =>
-      Theme.of(context).textTheme.caption.copyWith(color: HColors.textExtra);
+      Theme.of(context).textTheme.caption!.copyWith(color: HColors.textExtra);
 
   static TextStyle button(BuildContext context) =>
-      Theme.of(context).textTheme.button;
+      Theme.of(context).textTheme.button!;
 
   static TextStyle overline(BuildContext context) =>
-      Theme.of(context).textTheme.overline;
+      Theme.of(context).textTheme.overline!;
 }

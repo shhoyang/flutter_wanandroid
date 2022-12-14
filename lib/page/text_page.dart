@@ -1,8 +1,8 @@
-/// @Author: Yang Shihao
-/// @Date: 2021-01-07
-
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/style/colors.dart';
+
+/// @Author: Yang Shihao
+/// @Date: 2021-01-07
 
 class TextPage extends StatelessWidget {
   @override
@@ -42,7 +42,7 @@ class TextPage extends StatelessWidget {
     );
   }
 
-  Widget _buildType(BuildContext context, TextStyle textStyle) {
+  Widget _buildType(BuildContext context, TextStyle? textStyle) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -53,7 +53,7 @@ class TextPage extends StatelessWidget {
     );
   }
 
-  Widget _buildType2(BuildContext context, TextStyle textStyle) {
+  Widget _buildType2(BuildContext context, TextStyle? textStyle) {
     return Text("Hellow world，您好世界", style: textStyle);
   }
 }

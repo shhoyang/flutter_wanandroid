@@ -1,10 +1,7 @@
-/// @Author: Yang Shihao
-/// @Date: 2021-01-06
-
-/// @Author: Yang Shihao
-/// @Date: 2021-01-06
-
 import 'package:flutter/material.dart';
+
+/// @Author: Yang Shihao
+/// @Date: 2021-01-06
 
 abstract class HColors {
   /// 按颜色

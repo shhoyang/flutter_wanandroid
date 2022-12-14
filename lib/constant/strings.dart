@@ -1,9 +1,6 @@
 /// @Author: Yang Shihao
 /// @Date: 2021-01-06
 
-/// @Author: Yang Shihao
-/// @Date: 2021-01-06 11:34:12
-
 abstract class Strings {
   static const String appName = "玩Android";
   static const String appEnglishName = "WAN ANDROID";

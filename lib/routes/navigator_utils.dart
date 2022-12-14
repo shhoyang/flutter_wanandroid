@@ -1,28 +1,23 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_wanandroid/bean/page_params/WebParams.dart';
+import 'package:flutter_wanandroid/constant/strings.dart';
+import 'package:flutter_wanandroid/routes/routes.dart';
+import 'package:flutter_wanandroid/widget/dialog/loading_dialog.dart';
+
 /// @Author: Yang Shihao
 /// @Date: 2021-01-06
 
-import 'package:flutter/material.dart';
-import 'package:flutter_wanandroid/constant/strings.dart';
-import 'package:flutter_wanandroid/page/web_page.dart';
-import 'package:flutter_wanandroid/widget/dialog/loading_dialog.dart';
-import 'package:get/get.dart';
-
 class NavigatorUtils {
-  static void toPage(String page, [dynamic arguments]) {
-    Get.toNamed(page, arguments: arguments);
+  static void pushNamed<T extends Object>(BuildContext context, routeName, [Object? arguments]) {
+    Navigator.pushNamed(context, routeName, arguments: arguments);
   }
 
-  static void back() {
-    Get.back();
+  static void pop<T extends Object?>(BuildContext context, [T? result]) {
+    Navigator.pop(context, result);
   }
 
   static void pushWeb(BuildContext context, String title, String url) {
-    pushPage(context, WebPage(title: title, url: url));
-  }
-
-  static void pushPage(BuildContext context, Widget page, {String name}) {
-    Navigator.push(
-        context, MaterialPageRoute(settings: name == null ? null : RouteSettings(name: name), builder: (context) => page));
+    pushNamed(context, Routes.WEB, WebParams(title, url));
   }
 
   static void showLoadingDialog(BuildContext context, [String text = Strings.loading]) {

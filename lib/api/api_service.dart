@@ -28,7 +28,7 @@ class ApiService {
 
   static const String register = "user/register";
 
-  static String getUrl(String path, {int id, int page, bool isJson = true}) {
+  static String getUrl(String path, {int? id, int? page, bool isJson = true}) {
     StringBuffer sb = StringBuffer(path);
 
     if (id != null) {

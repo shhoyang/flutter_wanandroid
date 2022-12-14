@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_wanandroid/constant/strings.dart';
-import 'package:flutter_wanandroid/style/colors.dart';
-import 'package:flutter_wanandroid/style/space.dart';
-import 'package:flutter_wanandroid/style/text_styles.dart';
+import 'package:flutter_wanandroid/style/style.dart';
 
 class LoadingView extends StatelessWidget {
   final String text;
 
-  LoadingView({Key key, this.text = Strings.loading}) : super(key: key);
+  LoadingView({Key? key, this.text = Strings.loading}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +20,8 @@ class LoadingView extends StatelessWidget {
         Space.v8,
         Text(
           text,
-          style: TextStyles.bodyText1(context).copyWith(
-            fontSize: 12.0,
-          ),
-        ),
+          style: TextStyles.bodyText1(context).copyWith(fontSize: 12.0),
+        )
       ],
     );
   }

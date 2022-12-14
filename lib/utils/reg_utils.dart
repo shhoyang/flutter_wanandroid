@@ -1,5 +1,5 @@
 class RegUtils {
-  static String removeSymbol(String origin) {
+  static String removeSymbol(String? origin) {
     if (origin == null || origin.isEmpty) {
       return "";
     }

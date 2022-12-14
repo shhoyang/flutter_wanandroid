@@ -22,23 +22,23 @@ class ListState {
   static void setController(RefreshController refreshController, int state) {
     if (refresh & state > 0) {
       if (succeed & state > 0) {
-        refreshController?.refreshCompleted(resetFooterState: true);
+        refreshController.refreshCompleted(resetFooterState: true);
         if ((noMore | noData) & state > 0) {
-          refreshController?.loadNoData();
+          refreshController.loadNoData();
         }
       } else {
-        refreshController?.refreshFailed();
-        refreshController?.loadNoData();
+        refreshController.refreshFailed();
+        refreshController.loadNoData();
       }
     } else {
       if (succeed & state > 0) {
         if (noMore & state > 0) {
-          refreshController?.loadNoData();
+          refreshController.loadNoData();
         } else {
-          refreshController?.loadComplete();
+          refreshController.loadComplete();
         }
       } else {
-        refreshController?.loadFailed();
+        refreshController.loadFailed();
       }
     }
   }

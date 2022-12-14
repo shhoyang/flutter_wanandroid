@@ -6,16 +6,16 @@ import 'package:get/state_manager.dart';
 /// @Date: 2021-01-15
 
 class AppController extends BaseController {
-  User _user;
+  User? _user;
 
-  User get user => _user;
+  User? get user => _user;
 
   final isLogin = RxBool(false);
 
   final doRefresh = RxInt(0);
 
   @override
-  void loadData([int page]) {
+  void loadData([int? page]) {
     doRefresh.value++;
   }
 }

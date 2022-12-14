@@ -3,25 +3,31 @@ import 'package:flutter_wanandroid/api/api_service.dart';
 import 'package:flutter_wanandroid/api/dio_manager.dart';
 import 'package:flutter_wanandroid/constant/strings.dart';
 import 'package:flutter_wanandroid/controller/user_manager_controller.dart';
+import 'package:flutter_wanandroid/routes/navigator_utils.dart';
 import 'package:flutter_wanandroid/utils/entity_factory.dart';
-import 'package:flutter_wanandroid/utils/navigator_utils.dart';
-import 'package:flutter_wanandroid/utils/snack.dart';
 import 'package:flutter_wanandroid/utils/t.dart';
-import 'package:get/get.dart';
 
-import 'base_simple_controller.dart';
+import '../../controller/base_simple_controller.dart';
 
 /// @Author: Yang Shihao
 /// @Date: 2021-01-14
+
 class LoginController extends BaseSimpleController {
+  final BuildContext _context;
+
+  LoginController(this._context);
+
   PageController pageController = PageController();
-  TextEditingController usernameController = TextEditingController(text: "haoshi");
-  TextEditingController passwordController = TextEditingController(text: "ysh520505");
+
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   TextEditingController registerUsernameController = TextEditingController();
   TextEditingController registerPasswordController = TextEditingController();
   TextEditingController registerConfirmPasswordController = TextEditingController();
 
   String _title = Strings.login;
+
   String get title => _title;
 
   void toLogin() {
@@ -50,13 +56,12 @@ class LoginController extends BaseSimpleController {
       return;
     }
 
-    DioManager.of().post(ApiService.getUrl(ApiService.login, isJson: false), (data) {
+    DioManager().post(ApiService.getUrl(ApiService.login, isJson: false), (data) {
       T.show(Strings.loginSucceed);
-      UserManagerController controller = UserManagerController.of();
+      UserManagerController controller = UserManagerController();
       controller.login(EntityFactory.generateEntity(data));
-      NavigatorUtils.back();
-    }, errorCallBack: (msg, code) {
-      Snack.show(Get.context, code);
+      NavigatorUtils.pop(_context);
+    }, errorCallBack: (code, msg) {
       T.show(msg);
     }, params: {"username": username, "password": password});
   }

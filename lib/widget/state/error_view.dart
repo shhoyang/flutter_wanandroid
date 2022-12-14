@@ -8,9 +8,7 @@ class EmptyView extends StatelessWidget {
     return Center(
       child: Text(
         Strings.loadFailed,
-        style: TextStyles.bodyText1(context).copyWith(
-          fontSize: 12.0,
-        ),
+        style: TextStyles.bodyText1(context).copyWith(fontSize: 12.0),
       ),
     );
   }

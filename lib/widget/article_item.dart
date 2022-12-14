@@ -3,12 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_wanandroid/bean/article.dart';
 import 'package:flutter_wanandroid/constant/strings.dart';
-import 'package:flutter_wanandroid/style/colors.dart';
-import 'package:flutter_wanandroid/style/text_styles.dart';
 import 'package:flutter_wanandroid/constant/images.dart';
-import 'package:flutter_wanandroid/utils/navigator_utils.dart';
-import 'package:flutter_wanandroid/style/radius.dart';
-import 'package:flutter_wanandroid/style/space.dart';
+import 'package:flutter_wanandroid/style/style.dart';
+import 'package:flutter_wanandroid/routes/navigator_utils.dart';
 
 class ArticleItem extends StatelessWidget {
   final Article article;
@@ -16,43 +13,37 @@ class ArticleItem extends StatelessWidget {
   final bool showChapter;
 
   ArticleItem({
-    Key key,
-    @required this.article,
+    Key? key,
+    required this.article,
     this.showAuthor = true,
     this.showChapter = false,
   }) : super(key: key);
 
   Widget _buildExtra(BuildContext context, Article article) {
-    Widget chapter;
-    Widget author;
-    Widget link;
+    Widget? chapter;
+    Widget? author;
+    Widget? link;
 
-    if (article.chapterName != null && article.chapterName.isNotEmpty && showChapter) {
+    if (article.chapterName != null && article.chapterName!.isNotEmpty && showChapter) {
       chapter = Container(
         padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 3.0),
-        child: Text(
-          article.chapterName,
-          style: TextStyles.caption(context).copyWith(color: HColors.white, fontSize: 10.0),
-        ),
+        child: Text(article.chapterName!, style: TextStyles.caption(context).copyWith(color: HColors.white, fontSize: 10.0)),
         decoration: BoxDecoration(color: HColors.tag, borderRadius: HRadius.r4),
       );
     }
 
-    if (article.author != null && article.author.isNotEmpty && showAuthor) {
-      author = Text(article.author, style: TextStyles.caption(context));
+    if (article.author != null && article.author!.isNotEmpty && showAuthor) {
+      author = Text(article.author!, style: TextStyles.caption(context));
     }
 
-    if (article.projectLink != null && article.projectLink.isNotEmpty) {
+    if (article.projectLink != null && article.projectLink!.isNotEmpty) {
       link = InkWell(
         child: Text(
           Strings.link,
-          style: TextStyles.caption(context).copyWith(
-            color: HColors.textLink,
-            decoration: TextDecoration.underline,
-          ),
+          style: TextStyles.caption(context).copyWith(color: HColors.textLink, decoration: TextDecoration.underline),
         ),
         onTap: () {
-          NavigatorUtils.pushWeb(context, article.showTitle, article.projectLink);
+          NavigatorUtils.pushWeb(context, article.showTitle, article.projectLink!);
         },
       );
     }
@@ -71,7 +62,7 @@ class ArticleItem extends StatelessWidget {
 
     children.add(
       Text(
-        article.niceDate,
+        article.niceDate!,
         style: TextStyles.caption(context),
       ),
     );
@@ -86,10 +77,10 @@ class ArticleItem extends StatelessWidget {
     children.add(
       InkWell(
         child: SvgPicture.asset(
-          article.collect ? Images.iconFavoriteEd : Images.iconFavoriteUn,
+          article.collect == true ? Images.iconFavoriteEd : Images.iconFavoriteUn,
           width: 24.0,
           height: 24.0,
-          color: article.collect ? HColors.favoriteEd : HColors.favoriteUn,
+          color: article.collect == true ? HColors.favoriteEd : HColors.favoriteUn,
         ),
         onTap: () {},
       ),
@@ -113,7 +104,7 @@ class ArticleItem extends StatelessWidget {
       ),
     );
     children.add(Space.v8);
-    if (article.desc != null && article.desc.isNotEmpty) {
+    if (article.desc != null && article.desc!.isNotEmpty) {
       children.add(
         Text(
           article.showDesc,
@@ -141,7 +132,7 @@ class ArticleItem extends StatelessWidget {
             child: AspectRatio(
               aspectRatio: 9 / 16,
               child: CachedNetworkImage(
-                imageUrl: article.envelopePic,
+                imageUrl: article.envelopePic!,
               ),
             ),
           ),
@@ -177,7 +168,7 @@ class ArticleItem extends StatelessWidget {
 
   Widget _buildItem(BuildContext context, Article article) {
     List<Widget> children;
-    if (article.envelopePic == null || article.envelopePic.isEmpty) {
+    if (article.envelopePic == null || article.envelopePic!.isEmpty) {
       children = _buildItemNoImage(context, article);
     } else {
       children = _buildItemWithImage(context, article);
@@ -194,7 +185,7 @@ class ArticleItem extends StatelessWidget {
         ),
       ),
       onTap: () {
-        NavigatorUtils.pushWeb(context, article.showTitle, article.link);
+        NavigatorUtils.pushWeb(context, article.showTitle, article.link!);
       },
     );
   }

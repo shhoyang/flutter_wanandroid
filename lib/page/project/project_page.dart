@@ -1,23 +1,23 @@
-/// @Author: Yang Shihao
-/// @Date: 2021-01-06
-
 import 'package:flutter/material.dart';
 import 'package:flutter_wanandroid/bean/article.dart';
 import 'package:flutter_wanandroid/bean/project_type.dart';
-import 'package:flutter_wanandroid/controller/project_controller.dart';
+import 'package:flutter_wanandroid/constant/images.dart';
+import 'package:flutter_wanandroid/constant/strings.dart';
+import 'package:flutter_wanandroid/page/project/project_controller.dart';
+import 'package:flutter_wanandroid/routes/navigator_utils.dart';
 import 'package:flutter_wanandroid/routes/routes.dart';
 import 'package:flutter_wanandroid/style/colors.dart';
-import 'package:flutter_wanandroid/constant/strings.dart';
-import 'package:flutter_wanandroid/style/text_styles.dart';
-import 'package:flutter_wanandroid/constant/images.dart';
-import 'package:flutter_wanandroid/utils/navigator_utils.dart';
-import 'package:flutter_wanandroid/widget/article_item.dart';
-import 'package:flutter_wanandroid/widget/simple_app_bar.dart';
 import 'package:flutter_wanandroid/style/radius.dart';
 import 'package:flutter_wanandroid/style/space.dart';
+import 'package:flutter_wanandroid/style/text_styles.dart';
+import 'package:flutter_wanandroid/widget/article_item.dart';
+import 'package:flutter_wanandroid/widget/simple_app_bar.dart';
 import 'package:flutter_wanandroid/widget/state/empty_view.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+
+/// @Author: Yang Shihao
+/// @Date: 2021-01-06
 
 class ProjectPage extends StatelessWidget {
   @override
@@ -42,13 +42,13 @@ class ProjectPage extends StatelessWidget {
   }
 
   /// 列表
-  Widget _buildBody(List<ProjectType> projectTypes, List<Article> data) {
-    if (projectTypes.isEmpty && data.isEmpty) {
+  Widget _buildBody(List<ProjectType> projectTypes, List<Article>? data) {
+    if (projectTypes.isEmpty && (data == null || data.isEmpty)) {
       return EmptyView();
     }
-    List<Widget> children = [];
+    var children = <Widget>[];
     children.add(_buildProjectType(projectTypes));
-    data.forEach((article) {
+    data!.forEach((article) {
       children.add(ArticleItem(article: article));
     });
     return ListView(
@@ -63,12 +63,14 @@ class ProjectPage extends StatelessWidget {
       child: GridView.builder(
           scrollDirection: Axis.horizontal,
           itemCount: data.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 1.0),
-          itemBuilder: (BuildContext context, int index) {
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, childAspectRatio: 1.0),
+          itemBuilder: (context, index) {
             return _buildTypeItem(context, data[index]);
           }),
       decoration: BoxDecoration(
-        border: Border(bottom: BorderSide(width: 8.0, color: HColors.grayWhite)),
+        border:
+            Border(bottom: BorderSide(width: 8.0, color: HColors.grayWhite)),
       ),
     );
   }
@@ -81,12 +83,14 @@ class ProjectPage extends StatelessWidget {
         children: [
           Image.asset(Images.icon, width: 48.0),
           Space.getV(4.0),
-          Text(projectType.showName, maxLines: 1, style: TextStyles.bodyText1(context).copyWith(fontSize: 12.0))
+          Text(projectType.showName,
+              maxLines: 1,
+              style: TextStyles.bodyText1(context).copyWith(fontSize: 12.0))
         ],
       ),
       borderRadius: HRadius.r50,
       onTap: () {
-        NavigatorUtils.toPage(Routes.PROJECT_ARTICLE, projectType);
+        NavigatorUtils.pushNamed(context, Routes.PROJECT_ARTICLE, projectType);
       },
     );
   }

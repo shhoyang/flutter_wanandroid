@@ -6,16 +6,17 @@ class TabPage extends StatefulWidget {
 
   final List<Widget> pages;
 
-  final List<Widget> actions;
+  final List<Widget>? actions;
 
-  TabPage({Key key, this.tabs, this.pages, this.actions}) : super(key: key);
+  TabPage({Key? key, required this.tabs, required this.pages, this.actions})
+      : super(key: key);
 
   @override
   _TabPageState createState() => _TabPageState();
 }
 
 class _TabPageState extends State<TabPage> with SingleTickerProviderStateMixin {
-  TabController _tabController;
+  TabController? _tabController;
 
   @override
   void initState() {

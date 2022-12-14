@@ -4,8 +4,8 @@ part 'hot_word.g.dart';
 
 @JsonSerializable()
 class HotWord extends Object {
-  int id;
-  String name;
+  int? id;
+  String? name;
 
   HotWord(
     this.id,

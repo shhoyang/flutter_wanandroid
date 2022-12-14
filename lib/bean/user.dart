@@ -7,14 +7,11 @@ part 'user.g.dart';
 
 @JsonSerializable()
 class User extends Object {
-  int id;
-  String username;
-  String token;
-  String email;
-  String icon;
-  String extension;
+  int? id;
+  String? username;
+  String? token;
 
-  User(this.id, this.username, this.token, this.email, this.icon, this.extension);
+  User(this.id, this.username, this.token);
 
   factory User.fromJson(Map<String, dynamic> srcJson) => _$UserFromJson(srcJson);
 

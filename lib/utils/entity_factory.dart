@@ -4,12 +4,12 @@ import 'package:flutter_wanandroid/bean/bean.dart';
 /// @Date: 2021-01-15
 
 class EntityFactory {
-  static T generateEntity<T>(json) {
+  static T? generateEntity<T>(json) {
     if (json == null) {
       return null;
     }
 
-    T t;
+    T? t;
 
     switch (T.toString()) {
       case "Ad":
@@ -41,12 +41,18 @@ class EntityFactory {
     return t;
   }
 
-  static List<T> generateList<T>(List data) {
+  static List<T> generateList<T>(List? data) {
     if (data == null || data.isEmpty) {
       return [];
     }
-    return data.map((item) {
-      return generateEntity<T>(item);
-    }).toList();
+
+    var ret = <T>[];
+    data.forEach((item) {
+      T? t = generateEntity<T>(item);
+      if (t != null) {
+        ret.add(t);
+      }
+    });
+    return ret;
   }
 }

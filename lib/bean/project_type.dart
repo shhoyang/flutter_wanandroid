@@ -5,8 +5,8 @@ part 'project_type.g.dart';
 
 @JsonSerializable()
 class ProjectType extends Object {
-  int id;
-  String name;
+  int? id;
+  String? name;
 
   ProjectType(
     this.id,

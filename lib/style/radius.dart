@@ -1,7 +1,7 @@
+import 'package:flutter/material.dart';
+
 /// @Author: Yang Shihao
 /// @Date: 2021-01-06
-
-import 'package:flutter/material.dart';
 
 abstract class HRadius {
   static const BorderRadius r4 = BorderRadius.all(Radius.circular(4.0));

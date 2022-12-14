@@ -1,3 +1,3 @@
 class GlobalConfig {
-  static const bool isDebug = true;
+  static const bool isDebug = false;
 }

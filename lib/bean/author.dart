@@ -4,10 +4,10 @@ part 'author.g.dart';
 
 @JsonSerializable()
 class Author extends Object {
-  int id;
-  String name;
-  int order;
-  int visible;
+  int? id;
+  String? name;
+  int? order;
+  int? visible;
 
   Author(
     this.id,

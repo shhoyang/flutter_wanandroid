@@ -5,9 +5,9 @@ part 'knowledge.g.dart';
 
 @JsonSerializable()
 class Knowledge extends Object {
-  List<Knowledge> children;
-  int id;
-  String name;
+  List<Knowledge>? children;
+  int? id;
+  String? name;
   bool isSelected = false;
 
   Knowledge(

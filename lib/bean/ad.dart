@@ -4,10 +4,10 @@ part 'ad.g.dart';
 
 @JsonSerializable()
 class Ad extends Object {
-  int id;
-  String imagePath;
-  String title;
-  String url;
+  int? id;
+  String? imagePath;
+  String? title;
+  String? url;
 
   Ad(
     this.id,

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_wanandroid/style/dimens.dart';
-import 'package:flutter_wanandroid/style/colors.dart';
+import 'package:flutter_wanandroid/style/style.dart';
 
 class SimpleAppBar extends AppBar {
   SimpleAppBar(String titleText,
-      {List<Widget> menus, PreferredSizeWidget bottom})
+      {List<Widget>? menus, PreferredSizeWidget? bottom})
       : super(
           title: Text(
             titleText,

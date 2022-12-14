@@ -1,21 +1,20 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_wanandroid/style/style.dart';
+
 /// @Author: Yang Shihao
 /// @Date: 2021-01-15
 
-import 'package:flutter/material.dart';
-import 'package:flutter_wanandroid/style/colors.dart';
-import 'package:flutter_wanandroid/style/text_styles.dart';
-
 class RoundButton extends StatelessWidget {
-  String text;
-  double width;
-  double height;
-  Color textColor;
-  Color color;
-  double radius;
-  Function onTap;
+  final String text;
+  final double width;
+  final double height;
+  final Color textColor;
+  final Color color;
+  final double radius;
+  final GestureTapCallback? onTap;
 
   RoundButton(this.text,
-      {Key key,
+      {Key? key,
       this.width = double.infinity,
       this.height = 40.0,
       this.radius = 4.0,
